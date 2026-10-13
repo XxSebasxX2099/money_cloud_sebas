@@ -1,6 +1,8 @@
+name: CI
+
 on:
   push:
-   branches: [main, develop]
+    branches: [main, develop]
   pull_request:
 
 permissions:
@@ -8,26 +10,26 @@ permissions:
 
 jobs:
   validate:
-   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-   steps:
-    - name: Checkout
-      uses: actions/checkout@v4
-    
-    - name: Setput Node.js
-      uses: actions/setup-node@v4
-      with: 
-       node-version: '22'
-       cache: npm
-    
-    - name: Install Dependencies
-      run: npm ci
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: API test
-      run: npm test
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
 
-    - name: Build Frontend
-      run: npm run build
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Build Api Docker Image
-      run: docker build -f apps/api/Dockerfile -t moneycloud-api:ci
+      - name: API tests
+        run: npm test
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Build API Docker image
+        run: docker build -f apps/api/Dockerfile -t moneycloud-api:ci .
